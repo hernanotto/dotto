@@ -326,39 +326,6 @@
       transition: color 0.3s;
     }
 
-    /* ── NUMBERS ── */
-    #numbers {
-      background: var(--navy-dark);
-      padding: 6rem 5vw;
-    }
-    .numbers-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 3rem;
-      margin-top: 4rem;
-    }
-    .number-item { text-align: center; }
-    .number-val {
-      font-family: 'Outfit', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 300;
-      color: var(--white);
-      line-height: 1;
-      margin-bottom: 0.75rem;
-    }
-    .number-val span { color: var(--accent-bright); }
-    .number-label {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      letter-spacing: 0.05em;
-    }
-    .numbers-divider {
-      width: 1px;
-      background: var(--border);
-      height: 100%;
-      display: none;
-    }
 
     /* ── PROCESS ── */
     #process { background: var(--white); }
@@ -752,28 +719,6 @@
     </div>
   </section>
 
-  <!-- NUMBERS -->
-  <section id="numbers">
-    <div class="section-tag" style="color:var(--text-muted);">Números que hablan</div>
-    <div class="numbers-grid">
-      <div class="number-item reveal">
-        <div class="number-val"><span class="counter" data-target="50">0</span>+</div>
-        <div class="number-label">Proyectos de datos<br>completados</div>
-      </div>
-      <div class="number-item reveal">
-        <div class="number-val"><span class="counter" data-target="30">0</span>+</div>
-        <div class="number-label">Clientes satisfechos<br>en distintos sectores</div>
-      </div>
-      <div class="number-item reveal">
-        <div class="number-val"><span class="counter" data-target="10">0</span>+</div>
-        <div class="number-label">Años de experiencia<br>en análisis de datos</div>
-      </div>
-      <div class="number-item reveal">
-        <div class="number-val"><span class="counter" data-target="98">0</span>%</div>
-        <div class="number-label">Tasa de retención<br>de clientes</div>
-      </div>
-    </div>
-  </section>
 
   <!-- PROCESS -->
   <section id="process">
@@ -811,29 +756,15 @@
   <section id="team">
     <div class="section-tag">Quiénes somos</div>
     <h2 class="section-title">El equipo <em>detrás de los datos</em></h2>
-    <div class="team-grid">
+    <div class="team-grid" style="grid-template-columns: 1fr; max-width: 360px;">
       <div class="team-card reveal">
-        <div class="team-avatar">OD</div>
-        <div class="team-info">
-          <div class="team-name">Otto Dotto</div>
-          <div class="team-role">Founder & Data Lead</div>
-          <p class="team-bio">Especialista en analytics, pricing y modelado estadístico. Experiencia en seguros y mercados financieros con foco en inteligencia de datos accionable.</p>
+        <div class="team-avatar" style="background:none; padding:0; overflow:hidden;">
+          <img src="Foto.png" alt="Hernán Ottogalli" style="width:100%; height:100%; object-fit:cover; object-position: center top;" />
         </div>
-      </div>
-      <div class="team-card reveal">
-        <div class="team-avatar">—</div>
         <div class="team-info">
-          <div class="team-name">Tu próximo rol</div>
-          <div class="team-role">Data Engineer</div>
-          <p class="team-bio">Estamos creciendo. Si te apasionan los datos y querés formar parte de un equipo que construye soluciones reales, escribinos.</p>
-        </div>
-      </div>
-      <div class="team-card reveal">
-        <div class="team-avatar">—</div>
-        <div class="team-info">
-          <div class="team-name">Tu próximo rol</div>
-          <div class="team-role">BI Specialist</div>
-          <p class="team-bio">Buscamos referentes en visualización y business intelligence para ampliar el equipo y la oferta de servicios.</p>
+          <div class="team-name">Hernán Ottogalli</div>
+          <div class="team-role">Founder</div>
+          <p class="team-bio">Actuario (UBA) con más de 7 años en el sector asegurador. Especializado en automatización de procesos, modelado de demanda, tarificación y reporting estratégico. Construye soluciones de datos con impacto directo en el negocio.</p>
         </div>
       </div>
     </div>
@@ -851,14 +782,14 @@
             <div class="contact-icon">📍</div>
             <div class="contact-item-text">
               <strong>Buenos Aires</strong>
-              Palermo, Buenos Aires, Argentina
+              Buenos Aires, Argentina
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">✉️</div>
             <div class="contact-item-text">
               <strong>Email</strong>
-              <a href="mailto:hola@dotto.com.ar" style="color:inherit;text-decoration:none;">hola@dotto.com.ar</a>
+              <a href="mailto:hernanotto22@gmail.com" style="color:inherit;text-decoration:none;">hernanotto22@gmail.com</a>
             </div>
           </div>
         </div>
@@ -964,25 +895,6 @@
       }
     });
 
-    // Counter animation
-    const counters = document.querySelectorAll('.counter');
-    const counterObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = +entry.target.dataset.target;
-          const duration = 1600;
-          const step = target / (duration / 16);
-          let current = 0;
-          const timer = setInterval(() => {
-            current += step;
-            if (current >= target) { current = target; clearInterval(timer); }
-            entry.target.textContent = Math.floor(current);
-          }, 16);
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    counters.forEach(el => counterObserver.observe(el));
   </script>
 </body>
 </html>
