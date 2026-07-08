@@ -558,6 +558,26 @@
       margin-top: 0.5rem;
     }
     .form-submit:hover { background: var(--accent-bright); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .form-message {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      display: none;
+    }
+    .form-message.success {
+      display: block;
+      background: rgba(74,212,127,0.12);
+      border: 1px solid rgba(74,212,127,0.35);
+      color: #5de8a0;
+    }
+    .form-message.error {
+      display: block;
+      background: rgba(212,74,74,0.12);
+      border: 1px solid rgba(212,74,74,0.35);
+      color: #e87a7a;
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -838,29 +858,29 @@
             <div class="contact-icon">✉️</div>
             <div class="contact-item-text">
               <strong>Email</strong>
-              hola@dotto.com.ar
+              <a href="mailto:hola@dotto.com.ar" style="color:inherit;text-decoration:none;">hola@dotto.com.ar</a>
             </div>
           </div>
         </div>
       </div>
-      <div class="contact-form reveal">
+      <form class="contact-form reveal" id="contact-form">
         <div class="form-row">
           <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" placeholder="Tu nombre" />
+            <label for="cf-name">Nombre</label>
+            <input id="cf-name" type="text" name="name" placeholder="Tu nombre" required />
           </div>
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="tu@email.com" />
+            <label for="cf-email">Email</label>
+            <input id="cf-email" type="email" name="email" placeholder="tu@email.com" required />
           </div>
         </div>
         <div class="form-group">
-          <label>Empresa</label>
-          <input type="text" placeholder="Nombre de tu empresa" />
+          <label for="cf-company">Empresa</label>
+          <input id="cf-company" type="text" name="empresa" placeholder="Nombre de tu empresa" />
         </div>
         <div class="form-group">
-          <label>Asunto</label>
-          <select>
+          <label for="cf-subject">Asunto</label>
+          <select id="cf-subject" name="asunto">
             <option value="">Seleccioná una opción</option>
             <option>Consulta general</option>
             <option>Proyecto de análisis de datos</option>
@@ -870,18 +890,21 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Mensaje</label>
-          <textarea placeholder="Contanos en qué te podemos ayudar..."></textarea>
+          <label for="cf-message">Mensaje</label>
+          <textarea id="cf-message" name="message" placeholder="Contanos en qué te podemos ayudar..." required></textarea>
         </div>
-        <button class="form-submit">Enviar mensaje →</button>
-      </div>
+        <!-- Honeypot anti-spam -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+        <button type="submit" class="form-submit" id="form-submit-btn">Enviar mensaje →</button>
+        <div class="form-message" id="form-msg"></div>
+      </form>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-logo">Dotto<span>.</span></div>
-    <div class="footer-copy">© 2025 Dotto. Todos los derechos reservados.</div>
+    <div class="footer-copy">© 2026 Dotto. Todos los derechos reservados.</div>
     <div class="footer-links">
       <a href="#about">Nosotros</a>
       <a href="#services">Servicios</a>
@@ -907,6 +930,39 @@
       });
     }, { threshold: 0.12 });
     reveals.forEach(el => observer.observe(el));
+
+    // Contact form — Formspree
+    const contactForm = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('form-submit-btn');
+    const formMsg = document.getElementById('form-msg');
+
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+      formMsg.className = 'form-message';
+
+      try {
+        const response = await fetch('https://formspree.io/f/mdarvzqn', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(contactForm)
+        });
+        if (response.ok) {
+          formMsg.className = 'form-message success';
+          formMsg.textContent = '¡Mensaje enviado! Te respondemos a la brevedad.';
+          contactForm.reset();
+        } else {
+          throw new Error();
+        }
+      } catch {
+        formMsg.className = 'form-message error';
+        formMsg.textContent = 'Hubo un error al enviar. Escribinos directamente a hernanotto22@gmail.com';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar mensaje →';
+      }
+    });
 
     // Counter animation
     const counters = document.querySelectorAll('.counter');
