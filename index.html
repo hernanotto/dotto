@@ -109,6 +109,50 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--white); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px;
+      left: 0; right: 0;
+      background: var(--navy-dark);
+      padding: 1.5rem 5vw 2rem;
+      flex-direction: column;
+      gap: 0;
+      z-index: 99;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--white); }
     .nav-cta {
       background: var(--accent);
       color: var(--white) !important;
@@ -659,6 +703,7 @@
       .step-dot { display: none; }
       .team-grid { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
+      .hamburger { display: flex; }
       .form-row { grid-template-columns: 1fr; }
     }
 
@@ -680,7 +725,19 @@
       <li><a href="#team">Equipo</a></li>
       <li><a href="#contact" class="nav-cta">Contacto</a></li>
     </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#about" onclick="closeMobileMenu()">Nosotros</a>
+    <a href="#services" onclick="closeMobileMenu()">Servicios</a>
+    <a href="#process" onclick="closeMobileMenu()">Proceso</a>
+    <a href="#team" onclick="closeMobileMenu()">Equipo</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contacto</a>
+  </div>
 
   <!-- HERO -->
   <section id="hero">
@@ -909,6 +966,18 @@
   </footer>
 
   <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobileMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
     // Navbar scroll
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
